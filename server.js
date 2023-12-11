@@ -20,6 +20,7 @@ const fs = require("fs");
 }
 */
 
+//client folder within index.html
 try {
   const filePath = path.join(__dirname, "client", "index.html");
 
@@ -33,11 +34,20 @@ try {
   console.error(err.message);
 }
 
+//client folder within style.css
 try {
   const filePath = path.join(__dirname, "client", "style.css");
 
   fs.writeFileSync(filePath, "body {background-color: blue;}");
 } catch (err) {
   console.error(err.code);
+  console.error(err.message);
+}
+
+//contact folder
+try {
+  fs.mkdirSync(path.join(__dirname, "./client/contact"));
+} catch (err) {
+  console.error("Error code :", err.code);
   console.error(err.message);
 }
