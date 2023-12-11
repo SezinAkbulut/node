@@ -73,3 +73,11 @@ try {
   console.error(err.code);
   console.error(err.message);
 }
+
+//about folder
+try {
+  fs.mkdirSync(path.join(__dirname, "./client/about"));
+} catch (err) {
+  console.error("Error code :", err.code);
+  console.error(err.message);
+}
