@@ -63,3 +63,13 @@ try {
   console.error(err.code);
   console.error(err.message);
 }
+
+//contact folder within style.css
+try {
+  const filePath = path.join(__dirname, "./client/contact", "style.css");
+
+  fs.writeFileSync(filePath, "body {background-color: green;}");
+} catch (err) {
+  console.error(err.code);
+  console.error(err.message);
+}
