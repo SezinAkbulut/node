@@ -135,3 +135,17 @@ try {
   console.error(err.code);
   console.error(err.message);
 }
+
+const os = require("node:os");
+console.log("Platform: " + os.platform());
+console.log("Architecture: " + os.arch());
+
+//OS folder
+try {
+  const filePath = path.join(__dirname, "client", "info.txt");
+
+  fs.writeFileSync(filePath, "This is being run on a Darwin computer!");
+} catch (err) {
+  console.error(err.code);
+  console.error(err.message);
+}
