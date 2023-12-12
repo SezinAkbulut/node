@@ -1,4 +1,4 @@
-console.log("Hello Wold");
+/*console.log("Hello Wold");
 console.log("This is a console log from my server.js file");
 
 const path = require("path");
@@ -149,3 +149,80 @@ try {
   console.error(err.code);
   console.error(err.message);
 }
+
+*/
+
+const http = require("http");
+const fs = require("fs");
+
+// The server object
+const server = http.createServer((req, res) => {
+  console.log(req.url, req.method);
+
+  /*
+  res.write("<head><link rel='stylesheet' href='#'></head>");
+  res.write("<p>hello, ninjas</p>");
+  res.write("<p>hello again, ninjas</p>");
+
+  res.end();
+  */
+  res.setHeader("Content-type", "text/html");
+
+  let path = "./client/";
+  switch (req.url) {
+    case "/":
+      path += "index.html";
+      res.statusCode = 200;
+      break;
+    case "/about":
+      path += "/about/index.html";
+      res.statusCode = 200;
+      break;
+    case "/about-me":
+      res.statusCode = "301";
+      res.setHeader("location", "/about");
+      res.end();
+      break;
+    default:
+      path += "404.html";
+      res.statusCode = 404;
+      break;
+    case "/blog":
+      path += "/blog/index.html";
+      res.statusCode = 200;
+      break;
+    case "/contact":
+      path += "/contact/index.html";
+      res.statusCode = 200;
+      break;
+  }
+
+  fs.readFile(path, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.statusCode = 404;
+      res.end();
+    } else {
+      //res.write(data);
+      res.statusCode = 200;
+      res.end(data);
+    }
+  });
+});
+
+// The port listener
+server.listen(3000, "localhost", () => {
+  console.log("Server started on http://127.0.0.1:3000");
+});
+
+/* 
+server.on
+// The event watcher
+("request",
+
+if (req.url === "/") {
+    res.statusCode = 200;
+  } else {
+    res.statusCode(404);
+  }
+  */
