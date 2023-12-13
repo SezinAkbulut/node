@@ -179,7 +179,7 @@ const server = http.createServer((req, res) => {
       res.statusCode = 200;
       break;
     case "/about-me":
-      res.statusCode = "301";
+      res.statusCode = 301;
       res.setHeader("location", "/about");
       res.end();
       break;
@@ -200,11 +200,11 @@ const server = http.createServer((req, res) => {
   fs.readFile(path, (err, data) => {
     if (err) {
       console.log(err);
-      res.statusCode = 404;
+      //res.statusCode = 404;
       res.end();
     } else {
       //res.write(data);
-      res.statusCode = 200;
+      //res.statusCode = 200;
       res.end(data);
     }
   });
@@ -225,4 +225,37 @@ if (req.url === "/") {
   } else {
     res.statusCode(404);
   }
+  */
+
+//express
+/*
+  import express from "express"
+
+  const app = express();
+
+  app.use(express.json())
+
+  const checkIfLoggedIn(req,res,next) => {
+  if (true) next()
+  res.send()
+  }
+
+  app.get("/", checkIfLoggedIn, ("req,res") => {
+  res.send({code:200, msg: "OK"})
+  };
+
+  app.get("/profile", ("req,res") => {
+  res.status(403).send();
+  };
+
+ // app.post("login", (req, res) => {
+   // res.status = 403.send({code: 403, msg: "no access"})
+  //})
+
+  app.listen (3000, () => {
+    console.log("running on http://localhost:3000")
+  })
+
+
+  
   */
