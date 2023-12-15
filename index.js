@@ -1,5 +1,11 @@
-const jsonwebtoken = require("jsonwebtoken");
 const express = require("express");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config();
+
+console.log("my_secret_key");
+console.log(process.env.API_KEY);
+//dotenv.config
 
 //const port = 3000;
 const app = express();
@@ -107,12 +113,55 @@ app.get("/blog", (req, res) => {
 });
 
 //recipes page
-app.get("/recipes", (req, res) => {
+app.get("/api/recipes", (req, res) => {
   res.send(recipes);
 });
 
+app.get("/api", (req, res) => {
+  res.json({
+    text: "my api!",
+  });
+});
+
+//POST login
+app.post("/api/login", (req, res) => {
+  //auth user
+  const user = { id: 3 };
+  const token = jwt.sign({ user }, "my_secret_key");
+  res.json({
+    token: token,
+    user: user,
+  });
+});
+
+//GET protected
+app.get("/api/protected", ensureToken, (req, res) => {
+  jwt.verify(req.token, "my_secret_key", function (err, data) {
+    if (err) {
+      res.sendStatus(403);
+    } else {
+      res.json({
+        text: "this is protected",
+        data: data,
+      });
+    }
+  });
+});
+
+function ensureToken(req, res, next) {
+  const bearerHeader = req.headers["authorization"];
+  if (typeof bearerHeader !== "undefined") {
+    const bearer = bearerHeader.split("");
+    const bearerToken = bearer[1];
+    reqitoken = bearerToken;
+    next();
+  } else {
+    res.sendStatus(403);
+  }
+}
+
 //GET API req
-app.get("/recipes/:id", (req, res) => {
+app.get("/api/recipes/:id", (req, res) => {
   // res.send(req.params.id);
   //console.log(req.params.id);
   const recipe = recipes.find((c) => c.id === parseInt(req.params.id));
@@ -122,11 +171,12 @@ app.get("/recipes/:id", (req, res) => {
 });
 
 //POST API
-app.post("/recipes", (req, res) => {
-  const schema = {
-    name: jsonwebtoken.sting,
-  };
-
+app.post("/api/recipes", (req, res) => {
+  const user = { id: 3 };
+  const token = jwt.sign({ user }, "my_secret_key");
+  res.json({
+    token: token,
+  });
   //Input Validation
   if (!req.body.name || req.body.name.length < 3) {
     //4004 Bad Request
@@ -156,4 +206,9 @@ app.listen(port, () =>
 
 app.use((req, res) => {
   res.sendFile("./client/404.html", { root: __dirname });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Internal Server Error" });
 });
